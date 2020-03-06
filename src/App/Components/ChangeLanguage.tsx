@@ -3,11 +3,11 @@ import {store} from "../App";
 import {getL, languages} from "../language";
 
 export default function ChangeLanguage(props: any): JSX.Element {
-    const langs: Array<JSX.Element> = languages.map((lang) => <option value={lang.id}>{lang.title}</option>);
-
+    const langs: Array<JSX.Element> = languages.map((lang) => <option key = {lang.id} value={lang.id}>{lang.title}</option>);
+// console.log("--store",store.getState());
     // @ts-ignore
-    const language = getL(store.getState().language.language);
-
+    const language = store.getState().language.language;
+console.log("--lang",language);
 
     const onSelectChange = (event: any)=>{
         props.setLanguage(event.target.value);
@@ -15,8 +15,8 @@ export default function ChangeLanguage(props: any): JSX.Element {
     };
 
     return (
-        <select data-v-79d4827c="" name="lang" onChange={onSelectChange}>
-            <option selected disabled={true} value={props.language}>{language.SignUp.form.choose}</option>
+        <select defaultValue={language} name="lang" onChange={onSelectChange}>
+            {/*<option selected disabled={true} id={"disabled"} value={props.language}>{language.SignUp.form.choose}</option>*/}
             {langs}
         </select>
     )

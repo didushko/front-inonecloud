@@ -9,20 +9,10 @@ interface IProps {
     children: Array <JSX.Element>;
 }
 
-function Header (props: IProps){
-    // @ts-ignore
-    const language = getL(store.getState().language.language);
+export default function Header (props: IProps){
     return (
         <header id = "logo">
             {props.children.map(i=>i)}
         </header>
     );
 }
-
-const mapStateToProps = (state: any)=>{
-    return{
-        language: state.language.language,
-    };
-};
-
-export default connect(mapStateToProps)(Header);

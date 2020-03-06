@@ -150,7 +150,7 @@ hr {
 }
 
 .controls .uploadfile input[type='submit'] {
-  background-image: url(../../../img/upload.png);
+  background-image: url(../img/upload.png);
   background-repeat: no-repeat;
   background-position-y: center;
   background-position-x: 4px;
@@ -160,7 +160,7 @@ hr {
 }
 
 .controls .createdir input[type='submit'] {
-  background-image: url(../../../img/dir.png);
+  background-image: url(../img/dir.png);
   background-repeat: no-repeat;
   background-position: center;
   /* 10px, 3px; */
@@ -169,7 +169,7 @@ hr {
 }
 
 .controls .download input[type='submit'] {
-  background-image: url(../../../img/downld.png);
+  background-image: url(../img/downld.png);
   background-repeat: no-repeat;
   background-position-y: center;
   background-position-x: 4px;
@@ -302,10 +302,10 @@ table thead {
 #banner {
   background-attachment: scroll, fixed;
   background-color: #fff;
-  -webkit-background-image: url("../../../img/cover.jpg");
-  -moz-background-image: url("../../../img/cover.jpg");
-  -o-background-image: url("../../../img/cover.jpg");
-  background-image: url("../../../img/cover.jpg");
+  -webkit-background-image: url("../img/cover.jpg");
+  -moz-background-image: url("../img/cover.jpg");
+  -o-background-image: url("../img/cover.jpg");
+  background-image: url("../img/cover.jpg");
   -webkit-background-position: top left, center center;
   -moz-background-position: top left, center center;
   -o-background-position: top left, center center;
@@ -557,10 +557,10 @@ table thead {
 #footer .buttonmenu .tu-ilmenau {
   height: 3em;
   width: 3em;
-  -webkit-background-image: url("../../../img/icons/tu_ilmenau.svg");
-  -moz-background-image: url("../../../img/icons/tu_ilmenau.svg");
-  -o-background-image: url("../../../img/icons/tu_ilmenau.svg");
-  background-image: url("../../../img/icons/tu_ilmenau.svg");
+  -webkit-background-image: url("../img/icons/tu_ilmenau.svg");
+  -moz-background-image: url("../img/icons/tu_ilmenau.svg");
+  -o-background-image: url("../img/icons/tu_ilmenau.svg");
+  background-image: url("../img/icons/tu_ilmenau.svg");
 }
 
 @media screen and (max-width: 380px) {

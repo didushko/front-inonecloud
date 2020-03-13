@@ -1,7 +1,4 @@
 import React from 'react';
-import {getL} from "../language";
-import {store} from "../App";
-import {connect} from "react-redux";
 
 
 

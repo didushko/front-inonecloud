@@ -1,12 +1,10 @@
 import React from 'react';
 import LogInForm from "../Components/LogInForm";
-import {connect} from "react-redux";
-import {getL} from "../language";
+import {getLanguage, Language} from "../language";
 import {store} from "../App";
 
- function SignIn(): JSX.Element {
-     // @ts-ignore
-     const language = getL(store.getState().language.language);
+export default function SignIn(): JSX.Element {
+     const language :Language = getLanguage(store.getState().language);
     return (
         <div>
             <section id="banner">
@@ -20,10 +18,3 @@ import {store} from "../App";
         </div>
     )
 }
-// const mapStateToProps = (state: any)=>{
-//     return{
-//         language: state.language.language,
-//     };
-// };
-
-export default SignIn;

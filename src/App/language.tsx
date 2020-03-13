@@ -1,5 +1,5 @@
 
-interface Languages {
+export interface Language {
     Header: {
         home: string,
         about: string,
@@ -35,13 +35,18 @@ interface Languages {
     }
 }
 
-interface Language {
+interface LanguageId {
     id: string,
     title: string,
 }
 
 
-const lang = {
+interface LangList {
+    [key: string] : Language
+}
+
+
+const langList : LangList = {
         "en": {
             Header: {
                 home: "Home",
@@ -139,7 +144,7 @@ const lang = {
     }
 ;
 
-const languages: Array<Language> = [
+const languages: Array<LanguageId> = [
     {
         id: "en",
         title: "English",
@@ -152,9 +157,9 @@ const languages: Array<Language> = [
 
  // const getLang = (key: string) : Languages=> lang[`${key}`];
 
-export function getL (l: string){
+export function getLanguage (l: string){
     // @ts-ignore
-    return lang[l.toString()];
+    return lang[l];
 }
 //
 export {languages};

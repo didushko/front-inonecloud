@@ -1,10 +1,10 @@
 import React from 'react';
-import {getL} from "../language";
+import {getLanguage, Language} from "../language";
 import {store} from "../App";
 
 export default function About() : JSX.Element {
-    // @ts-ignore
-    const language = getL(store.getState().language.language);
+
+    const language :Language = getLanguage(store.getState().language);
 
     const aboutUs :Array<JSX.Element> = language.About.text.map((p: any)=><p>{p}</p>);
 

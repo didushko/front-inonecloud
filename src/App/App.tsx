@@ -3,7 +3,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import SignIn from "./Pages/SignIn";
 import About from "./Pages/About";
 import SignUp from "./Pages/SignUp";
-import "./Style.scss"
+import "./scss/styles.scss"
 import {createStore, compose} from "redux";
 import rootReducer from "./Store/reducers"
 import {Provider} from "react-redux";

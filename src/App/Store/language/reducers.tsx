@@ -1,18 +1,11 @@
 import {LangAction, LANGUAGE_CHANGE} from "./actions";
-interface IState {
-    language: string;
-}
 
-const defaultState: IState = {
-    language: 'en'
-};
+const defaultState: string = 'en';
 
-export const languageReducer = (state: object = defaultState, action: LangAction) => {
+export const languageReducer = (state: string = defaultState, action: LangAction) => {
     switch (action.type) {
         case LANGUAGE_CHANGE:
-            return {
-                ...state, language: action.payload
-            }
+            return  action.payload
     }
     return state;
 };

@@ -1,11 +1,9 @@
 import React from "react";
-import {connect} from "react-redux";
-import {getL} from "../language";
+import {getLanguage, Language} from "../language";
 import {store} from "../App";
 
 function LogInForm(): JSX.Element {
-    // @ts-ignore
-    const language = getL(store.getState().language.language);
+    const language: Language = getLanguage(store.getState().language);
    return(<form id="auth">
         <fieldset id="inputs">
             <input name="username" type="text" placeholder={language.SignIn.username} autoFocus={true} required={true}

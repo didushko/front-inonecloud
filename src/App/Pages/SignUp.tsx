@@ -1,15 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import SignUpForm from "../Components/SignUpForm";
-import {connect} from "react-redux";
-import {setLanguage} from "../Store/language/actions";
+import {useSelector} from "react-redux";
 import {store} from "../App";
-import {getL} from "../language";
+import {getLanguage, Language} from "../language";
+import {State} from "../Store/reducers";
 
 
- function SignUp(props: any): JSX.Element {
+export default function SignUp(): JSX.Element {
 
-     // @ts-ignore
-     const language = getL(store.getState().language.language);
+     useSelector((state:State) =>state.language);
+
+     const language :Language= getLanguage(store.getState().language);
 
     return (
         <article id='main' className='container'>
@@ -23,12 +24,4 @@ import {getL} from "../language";
             </article>
         </article>
     )
-}
-const mapStateToProps = (state: any)=>{
-    return{
-        language: state.language.language,
-    };
 };
-
-
-export default connect(mapStateToProps)(SignUp);

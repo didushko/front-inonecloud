@@ -1,16 +1,16 @@
 import {Link} from "react-router-dom";
 import React from "react";
 import Header from "../Components/Header";
-import {useSelector} from "react-redux";
 import {getLanguage, Language} from "../language";
 import {store} from "../App";
+import {useSelector} from "react-redux";
 import {State} from "../Store/reducers";
 
 
-export default function HeaderElement(){
-    useSelector((state:State) =>state.language);
-    const language :Language = getLanguage(store.getState().language);
+export default function FooterElement(){
 
+    useSelector((state :State) =>state.language);
+    const language :Language = getLanguage(store.getState().language);
     const headerElements: Array<JSX.Element> = [
         <h1 key="header">InOneCloud</h1>,
         <nav>

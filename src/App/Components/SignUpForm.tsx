@@ -79,14 +79,14 @@ export default function SignUpForm(): JSX.Element {
                 },
             );
             if(result.status===201){
-                setFormState({error:"Регистрация успешна!"});
+                setFormState({error:language.SignUp.form.registration});
             }
             //window.location.href = "/";
        } catch (e) {
             switch(e.response.status){
-                case 409: setFormState({error:"Такой пользователь уже существует"}); break;
-                case 400: setFormState({error:"Некорректные данные"}); break;
-                default: setFormState({error:"К сожалению сервер временно недоступен, попробуйте позже"}); break;
+                case 409: setFormState({error:language.SignUp.form.errors.userExist}); break;
+                case 400: setFormState({error: language.SignUp.form.errors.incorrectly}); break;
+                default: setFormState({error:language.SignUp.form.errors.server}); break;
             }
 
         }

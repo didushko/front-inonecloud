@@ -1,10 +1,12 @@
 import React, {useReducer} from "react";
 import {getLanguage, Language} from "../language";
 import {store} from "../App";
+import axios, {AxiosResponse} from "axios";
 
 interface IState {
     username: string,
-    password: string
+    password: string,
+    error: string,
 }
 
 function LogInForm(): JSX.Element {
@@ -14,7 +16,34 @@ function LogInForm(): JSX.Element {
         {
             username: '',
             password: '',
+            error: '',
         });
+
+    async function logIn(){
+        if(!logState.username || !logState.password){
+            logDispatch({error: "Введите корректные данные"});
+            return;
+        }
+        try {
+            let result: AxiosResponse = await axios.post(
+                "http://localhost:8080/api/auth",
+                {
+                    username: logState.username,
+                    password: logState.password,
+                },
+            );
+            if(result.status===200){
+                logDispatch({error:"Вход выполнен!"});
+            }
+            //window.location.href = "/";
+        } catch (e) {
+                switch(e.response.status){
+                case 403: logDispatch({error:"Некорректный логин/пароль"}); break;
+                default: logDispatch({error:"К сожалению сервер временно недоступен, попробуйте позже"}); break;
+            }
+
+        }
+    }
 
     return (<form id="auth">
         <fieldset id="inputs">
@@ -24,18 +53,19 @@ function LogInForm(): JSX.Element {
                    className="username"
                    value={logState.username}
                    // onChange={(e)=>logDispatch({[e.target.name] : e.target.value})}
-                   onChange={(e)=>logDispatch({[e.target.name] : e.target.value})}
+                   onChange={(e)=>logDispatch({[e.target.name] : e.target.value, error: ''})}
             />
             <input name="password"
                    type="password"
                    placeholder={language.SignIn.password}
                    required={true} className="password"
                    value={logState.password}
-                   onChange={(e)=>logDispatch({[e.target.name] : e.target.value})}
+                   onChange={(e)=>logDispatch({[e.target.name] : e.target.value, error: ''})}
             />
         </fieldset>
         <fieldset id="actions">
-            <input data-v-3eea7fb5="" type="button" name="logIN" value={language.SignIn.login} className="button"/>
+            <input type="button" name="logIN" value={language.SignIn.login} className="button" onClick={logIn}/>
+            <div style={{color: "red", position: "absolute", textAlign: "center", left: "40%"}} >{logState.error}</div>
         </fieldset>
     </form>)
 }

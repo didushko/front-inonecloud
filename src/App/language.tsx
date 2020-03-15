@@ -34,8 +34,12 @@ export interface Language {
                 username: string,
                 email: string,
                 password: string,
-                rpassword: string
-            }
+                rpassword: string,
+                userExist: string,
+                incorrectly: string,
+                server: string,
+            },
+            registration: string,
         }
 
     }
@@ -99,8 +103,12 @@ const langList : LangList = {
                         username: "Please, enter username",
                         email: "Please, enter correct email",
                         password: "Password should have 6 sybols with digits",
-                        rpassword: "Passwords do not match"
-                    }
+                        rpassword: "Passwords do not match",
+                        userExist: "Such user already exists",
+                        incorrectly: "Incorrectly data",
+                        server: "Something wrong! Try later"
+                    },
+                    registration: "Registration successful!"
                 }
 
             }
@@ -108,7 +116,7 @@ const langList : LangList = {
         },
     "ru": {
         Header: {
-            home: "Home",
+            home: "Войти",
             about: "О Нас",
             signUp: "Зарегистрироваться"
         },
@@ -152,8 +160,12 @@ const langList : LangList = {
                     username: "Введите логин",
                     email: "Некорректный email",
                     password: "Пароль должен содержать не меньше 6 символов",
-                    rpassword: "Пароли не совпадают"
-                }
+                    rpassword: "Пароли не совпадают",
+                    userExist: "Такой пользователь уже существует",
+                    incorrectly: "Данные некорректны",
+                    server: "Сервер недоступен, попробуйте позже"
+                },
+                registration: "Регистрация успешна!",
             }
 
         }

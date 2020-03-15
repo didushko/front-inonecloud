@@ -13,7 +13,7 @@ export default function HeaderElement(){
 
     const headerElements: Array<JSX.Element> = [
         <h1 key="header">InOneCloud</h1>,
-        <nav>
+        <nav key="nav">
             <ul key="menu" id="topmenu">
                 <li key="/"><Link to='/'>{language.Header.home}</Link></li>
                 <li key="/about"><Link to='/about'>{language.Header.about}</Link></li>

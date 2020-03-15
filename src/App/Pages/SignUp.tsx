@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import SignUpForm from "../Components/SignUpForm";
 import {useSelector} from "react-redux";
 import {store} from "../App";

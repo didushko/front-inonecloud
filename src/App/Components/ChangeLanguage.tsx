@@ -7,8 +7,7 @@ import {State} from "../Store/reducers";
 export default function ChangeLanguage(): JSX.Element {
     const language :string = useSelector((state :State) =>state.language);
     const dispatch = useDispatch();
-    const langs: Array<JSX.Element> = languages.map((lang) => <option key = {lang.id} value={lang.id}>{lang.title}</option>);
-    //const language : string = store.getState().language;
+    const langList: Array<JSX.Element> = languages.map((lang) => <option key = {lang.id} value={lang.id}>{lang.title}</option>);
 
     const onSelectChange = (event: React.SyntheticEvent)=>{
         let target = event.target as HTMLInputElement;
@@ -16,7 +15,7 @@ export default function ChangeLanguage(): JSX.Element {
     };
     return (
         <select defaultValue={language} name="lang" onChange={onSelectChange}>
-            {langs}
+            {langList}
         </select>
     )
 }

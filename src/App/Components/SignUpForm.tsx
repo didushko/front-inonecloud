@@ -5,15 +5,15 @@ import {useReducer} from "react";
 import {useSelector} from "react-redux";
 import ChangeLanguage from "./ChangeLanguage";
 import {State} from "../Store/reducers";
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 
 interface IState {
-    username: string | undefined,
-    email: string | undefined,
-    password: string | undefined,
-    rPassword: string | undefined,
-    emailValid: boolean,
-    passwordValid: boolean
+    username: string,
+    email: string,
+    password: string,
+    rPassword: string,
+    validation: boolean,
+    error: string
 }
 
 export default function SignUpForm(): JSX.Element {
@@ -24,42 +24,77 @@ export default function SignUpForm(): JSX.Element {
 
 
     let [formState, setFormState] = useReducer((state: IState, newState: object) => ({...state, ...newState}), {
-        username: undefined,
-        email: undefined,
-        password: undefined,
-        rPassword: undefined,
-        emailValid: false,
-        passwordValid: false,
+        username: '',
+        email: '',
+        password: '',
+        rPassword: '',
+        validation: false,
+        error: '',
     });
 
 
     function changeInput(e: any) {
         setFormState({[e.target.name]: e.target.value});
-        if(formState.password==formState.rPassword){} //добавить проверки
+        console.log((/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(formState.email))
+
+    }
+
+    function inputBlur(){
+        //username example
+        if(formState.username.length==0){
+            setFormState({error: "Введите логин"});
+            setFormState({validation: false})
+        }
+        //password example
+        else if (formState.password !== formState.rPassword) {
+            setFormState({error: "Пароли не совпадают"});
+            setFormState({validation: false})
+        }
+        else if(formState.password.length<6){
+            setFormState({error: "Пароль должен содержать не меньше 6 символов"});
+            setFormState({validation: false})
+        }
+        //mailExample
+        else if(!(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(formState.email)){
+            setFormState({error: "Некорректный email"});
+            setFormState({validation: false})
+        }
+            else{
+            setFormState({error: ""});
+            setFormState({validation: true})
+        } //добавить проверки
+
+
     }
 
     async function registration() {
-        let result = await axios.get(
-            "http://localhost:8080/api/user/signUp",
-            {
-                data: {
+        try {
+            let result: AxiosResponse = await axios.post(
+                "http://localhost:8080/api/user/signUp",
+                {
                     username: formState.username,
                     email: formState.email,
                     password: formState.password,
                     activation: "true"
                 },
-                headers: {
-                    Accept: "application/json, text/plain, */*",
-                    "Content-Type": "application/json;charset=UTF-8",
-                }
-            },
-        )
+            );
+            if(result.status===201){
+                setFormState({error:"Регистрация успешна!"});
+            }
+            //window.location.href = "/";
+       } catch (e) {
+            switch(e.response.status){
+                case 409: setFormState({error:"Такой пользователь уже существует"}); break;
+                case 400: setFormState({error:"Некорректные данные"}); break;
+                default: setFormState({error:"К сожалению сервер временно недоступен, попробуйте позже"}); break;
+            }
+
+        }
     }
 
 
     return (
         <form id='regist' method='post' action="?">
-            <h1>{formState.username}</h1>
             <fieldset id="inputs">
 
                 <input
@@ -67,29 +102,38 @@ export default function SignUpForm(): JSX.Element {
                     name='username' type='text'
                     placeholder={language.SignUp.form.username}
                     autoFocus={true} required={true} className='username'
-                    onChange={changeInput}/>
+                    onChange={changeInput}
+                    onBlur={inputBlur}
+                />
 
                 <input name='email' type='email' placeholder={language.SignUp.form.email} required={true}
                        className='email'
                        value={formState.email}
-                       onChange={changeInput}/>
+                       onChange={changeInput}
+                       onBlur={inputBlur}
+                />
 
                 <input name='password' type='password' placeholder={language.SignUp.form.password} required={true}
                        pattern='[0-9a-zA-Z]{6,32}' title='Password should have 6 sybols with digits'
                        className='password'
                        value={formState.password}
-                       onChange={changeInput}/>
+                       onChange={changeInput}
+                       onBlur={inputBlur}
+                />
 
                 <input name='rPassword' type='password' placeholder={language.SignUp.form.rpassword}
                        required={true}
                        pattern='[0-9a-zA-Z]{6,32}' className='password'
                        value={formState.rPassword}
-                       onChange={changeInput}/>
+                       onChange={changeInput}
+                       onBlur={inputBlur}
+                />
 
                 <ChangeLanguage/>
 
-                <input type="button" name="Registration" value={language.SignUp.form.buttom} className="button"
+                <input disabled={!formState.validation} style={!formState.validation ? {backgroundColor: "gray"} : undefined} type="button" name="Registration" value={language.SignUp.form.buttom} className="button"
                        onClick={registration}/>
+                       <div style={{color: "red"}}>{formState.error}</div>
 
             </fieldset>
         </form>

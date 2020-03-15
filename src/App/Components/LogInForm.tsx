@@ -2,6 +2,10 @@ import React, {useReducer} from "react";
 import {getLanguage, Language} from "../language";
 import {store} from "../App";
 import axios, {AxiosResponse} from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {State} from "../Store/reducers";
+import {authReducer} from "../Store/auth/reducers";
+import {setAuth} from "../Store/auth/actions";
 
 interface IState {
     username: string,
@@ -11,6 +15,8 @@ interface IState {
 
 function LogInForm(): JSX.Element {
     const language: Language = getLanguage(store.getState().language);
+    const token :string = useSelector((state :State) =>state.token);
+    const dispatch = useDispatch();
 
     const [logState, logDispatch] = useReducer((state: IState, newState: object) => ({...state, ...newState}),
         {
@@ -34,6 +40,8 @@ function LogInForm(): JSX.Element {
             );
             if(result.status===200){
                 logDispatch({error:"Вход выполнен!"});
+                console.log(result);
+                dispatch(setAuth(result.data))
             }
             //window.location.href = "/";
         } catch (e) {

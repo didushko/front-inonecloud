@@ -1,38 +1,59 @@
 import * as React from "react";
 import {store} from "../App";
 import {getLanguage, Language} from "../language";
-import {SyntheticEvent, useReducer} from "react";
+import {useReducer} from "react";
 import {useSelector} from "react-redux";
 import ChangeLanguage from "./ChangeLanguage";
 import {State} from "../Store/reducers";
+import axios from 'axios';
 
 interface IState {
     username: string | undefined,
     email: string | undefined,
     password: string | undefined,
     rPassword: string | undefined,
+    emailValid: boolean,
+    passwordValid: boolean
 }
 
 export default function SignUpForm(): JSX.Element {
 
     const language: Language = getLanguage(store.getState().language);
 
-    useSelector((state: State) =>state.language);
+    useSelector((state: State) => state.language);
 
 
-    let [formState, setFormState] = useReducer( (state: IState, newState: object) => ({ ...state, ...newState }),{
+    let [formState, setFormState] = useReducer((state: IState, newState: object) => ({...state, ...newState}), {
         username: undefined,
         email: undefined,
         password: undefined,
-        rPassword: undefined
+        rPassword: undefined,
+        emailValid: false,
+        passwordValid: false,
     });
 
 
     function changeInput(e: any) {
-        setFormState(Object.assign(formState, {[e.target.name] : e.target.value}));
-        console.log(formState);
-        console.log(e.target.name);
-        console.log(e.target.value);
+        setFormState({[e.target.name]: e.target.value});
+        if(formState.password==formState.rPassword){} //добавить проверки
+    }
+
+    async function registration() {
+        let result = await axios.get(
+            "http://localhost:8080/api/user/signUp",
+            {
+                data: {
+                    username: formState.username,
+                    email: formState.email,
+                    password: formState.password,
+                    activation: "true"
+                },
+                headers: {
+                    Accept: "application/json, text/plain, */*",
+                    "Content-Type": "application/json;charset=UTF-8",
+                }
+            },
+        )
     }
 
 
@@ -68,7 +89,7 @@ export default function SignUpForm(): JSX.Element {
                 <ChangeLanguage/>
 
                 <input type="button" name="Registration" value={language.SignUp.form.buttom} className="button"
-                        onClick={()=>{console.log(formState.username)}}/>
+                       onClick={registration}/>
 
             </fieldset>
         </form>

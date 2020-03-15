@@ -159,7 +159,7 @@ const languages: Array<LanguageId> = [
 
 export function getLanguage (l: string){
     // @ts-ignore
-    return lang[l];
+    return langList[l];
 }
 //
 export {languages};

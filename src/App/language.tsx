@@ -30,6 +30,12 @@ export interface Language {
             license: string,
             buttom: string,
             choose: string,
+            errors: {
+                username: string,
+                email: string,
+                password: string,
+                rpassword: string
+            }
         }
 
     }
@@ -88,7 +94,13 @@ const langList : LangList = {
                     rpassword: "Repeat password",
                     license: "I agree with license",
                     buttom: "Create account",
-                    choose: "choose language"
+                    choose: "choose language",
+                    errors: {
+                        username: "Please, enter username",
+                        email: "Please, enter correct email",
+                        password: "Password should have 6 sybols with digits",
+                        rpassword: "Passwords do not match"
+                    }
                 }
 
             }
@@ -135,7 +147,13 @@ const langList : LangList = {
                 rpassword: "Повторите пароль",
                 license: "Я согласен",
                 buttom: "Создать акканут",
-                choose: "Изменить язык"
+                choose: "Изменить язык",
+                errors: {
+                    username: "Введите логин",
+                    email: "Некорректный email",
+                    password: "Пароль должен содержать не меньше 6 символов",
+                    rpassword: "Пароли не совпадают"
+                }
             }
 
         }

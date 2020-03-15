@@ -35,28 +35,28 @@ export default function SignUpForm(): JSX.Element {
 
     function changeInput(e: any) {
         setFormState({[e.target.name]: e.target.value});
-        console.log((/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(formState.email))
+        console.log((/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(formState.email))
 
     }
 
     function inputBlur(){
         //username example
         if(formState.username.length==0){
-            setFormState({error: "Введите логин"});
+            setFormState({error: language.SignUp.form.errors.username});
             setFormState({validation: false})
         }
         //password example
         else if (formState.password !== formState.rPassword) {
-            setFormState({error: "Пароли не совпадают"});
+            setFormState({error: language.SignUp.form.errors.rpassword});
             setFormState({validation: false})
         }
         else if(formState.password.length<6){
-            setFormState({error: "Пароль должен содержать не меньше 6 символов"});
+            setFormState({error: language.SignUp.form.errors.password});
             setFormState({validation: false})
         }
         //mailExample
         else if(!(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(formState.email)){
-            setFormState({error: "Некорректный email"});
+            setFormState({error: language.SignUp.form.errors.email});
             setFormState({validation: false})
         }
             else{

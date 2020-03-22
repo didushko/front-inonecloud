@@ -13,16 +13,13 @@ interface IState {
     password: string,
     rPassword: string,
     validation: boolean,
-    error: string
+    error: string,
+    registration: string
 }
 
 export default function SignUpForm(): JSX.Element {
 
     const language: Language = getLanguage(store.getState().language);
-
-    useSelector((state: State) => state.language);
-
-
 
     let [formState, setFormState] = useReducer((state: IState, newState: object) =>{
         let st = {...state, ...newState};
@@ -36,11 +33,14 @@ export default function SignUpForm(): JSX.Element {
         rPassword: '',
         validation: false,
         error: '',
+        registration: ''
     });
 
-    useEffect(()=>{
 
-    },[formState] );
+    useSelector((state: State) =>{
+        validation(formState);
+        return state.language
+    });
 
     function validation(st: IState){
         if(st.username.length==0){
@@ -87,14 +87,14 @@ export default function SignUpForm(): JSX.Element {
                 },
             );
             if(result.status===201){
-                setFormState({error:language.SignUp.form.registration});
+                setFormState({registration:language.SignUp.form.registration});
             }
             //window.location.href = "/";
        } catch (e) {
             switch(e.response.status){
-                case 409: setFormState({error:language.SignUp.form.errors.userExist}); break;
-                case 400: setFormState({error: language.SignUp.form.errors.incorrectly}); break;
-                default: setFormState({error:language.SignUp.form.errors.server}); break;
+                case 409: setFormState({registration:language.SignUp.form.errors.userExist}); break;
+                case 400: setFormState({registration: language.SignUp.form.errors.incorrectly}); break;
+                default: setFormState({registration:language.SignUp.form.errors.server}); break;
             }
 
         }
@@ -133,11 +133,11 @@ export default function SignUpForm(): JSX.Element {
                        onChange={changeInput}
                 />
 
-                <ChangeLanguage/>
+                <ChangeLanguage />
 
                 <input disabled={!formState.validation} style={!formState.validation ? {backgroundColor: "gray"} : undefined} type="button" name="Registration" value={language.SignUp.form.buttom} className="button"
                        onClick={registration}/>
-                       <div style={{color: "red"}}>{formState.error}</div>
+                       <div style={{color: "red"}}>{formState.error ? formState.error : formState.registration}</div>
 
             </fieldset>
         </form>

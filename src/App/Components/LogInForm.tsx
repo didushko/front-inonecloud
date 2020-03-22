@@ -41,9 +41,11 @@ function LogInForm(): JSX.Element {
             if(result.status===200){
                 logDispatch({error:"Вход выполнен!"});
                 console.log(result);
-                dispatch(setAuth(result.data))
+                dispatch(setAuth(result.data));
+                console.log("result",result.data);
+                console.log("token", store.getState().token);
+                // window.location.href = "/";
             }
-            //window.location.href = "/";
         } catch (e) {
                 switch(e.response.status){
                 case 403: logDispatch({error:"Некорректный логин/пароль"}); break;

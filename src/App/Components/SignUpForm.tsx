@@ -1,7 +1,7 @@
 import * as React from "react";
 import {store} from "../App";
 import {getLanguage, Language} from "../language";
-import {useReducer} from "react";
+import {useEffect, useReducer} from "react";
 import {useSelector} from "react-redux";
 import ChangeLanguage from "./ChangeLanguage";
 import {State} from "../Store/reducers";
@@ -23,7 +23,13 @@ export default function SignUpForm(): JSX.Element {
     useSelector((state: State) => state.language);
 
 
-    let [formState, setFormState] = useReducer((state: IState, newState: object) => ({...state, ...newState}), {
+
+    let [formState, setFormState] = useReducer((state: IState, newState: object) =>{
+        let st = {...state, ...newState};
+        st = {...st, ...validation(st)};
+        return st;
+    }, {
+        //({...state, ...newState}), {
         username: '',
         email: '',
         password: '',
@@ -32,38 +38,40 @@ export default function SignUpForm(): JSX.Element {
         error: '',
     });
 
+    useEffect(()=>{
 
-    function changeInput(e: any) {
-        setFormState({[e.target.name]: e.target.value});
-        console.log((/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(formState.email))
+    },[formState] );
 
-    }
-
-    function inputBlur(){
-        //username example
-        if(formState.username.length==0){
-            setFormState({error: language.SignUp.form.errors.username});
-            setFormState({validation: false})
+    function validation(st: IState){
+        if(st.username.length==0){
+            st.error = language.SignUp.form.errors.username;
+            st.validation = false;
         }
         //password example
-        else if (formState.password !== formState.rPassword) {
-            setFormState({error: language.SignUp.form.errors.rpassword});
-            setFormState({validation: false})
+        else if (st.password !== st.rPassword) {
+            st.error =  language.SignUp.form.errors.rpassword;
+            st.validation =  false;
         }
-        else if(formState.password.length<6){
-            setFormState({error: language.SignUp.form.errors.password});
-            setFormState({validation: false})
+        else if(st.password.length<6){
+            st.error =  language.SignUp.form.errors.password;
+            st.validation = false;
         }
         //mailExample
-        else if(!(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(formState.email)){
-            setFormState({error: language.SignUp.form.errors.email});
-            setFormState({validation: false})
+        else if(!(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i).test(st.email)){
+            st.error = language.SignUp.form.errors.email;
+            st.validation = false;
         }
-            else{
-            setFormState({error: ""});
-            setFormState({validation: true})
+        else{
+            st.error = "";
+            st.validation = true;
         } //добавить проверки
+        return st;
+    }
 
+
+    function changeInput(e: any) {
+        setFormState({[e.target.name] : e.target.value});
+        console.log(formState);
 
     }
 
@@ -103,14 +111,12 @@ export default function SignUpForm(): JSX.Element {
                     placeholder={language.SignUp.form.username}
                     autoFocus={true} required={true} className='username'
                     onChange={changeInput}
-                    onBlur={inputBlur}
                 />
 
                 <input name='email' type='email' placeholder={language.SignUp.form.email} required={true}
                        className='email'
                        value={formState.email}
                        onChange={changeInput}
-                       onBlur={inputBlur}
                 />
 
                 <input name='password' type='password' placeholder={language.SignUp.form.password} required={true}
@@ -118,7 +124,6 @@ export default function SignUpForm(): JSX.Element {
                        className='password'
                        value={formState.password}
                        onChange={changeInput}
-                       onBlur={inputBlur}
                 />
 
                 <input name='rPassword' type='password' placeholder={language.SignUp.form.rpassword}
@@ -126,7 +131,6 @@ export default function SignUpForm(): JSX.Element {
                        pattern='[0-9a-zA-Z]{6,32}' className='password'
                        value={formState.rPassword}
                        onChange={changeInput}
-                       onBlur={inputBlur}
                 />
 
                 <ChangeLanguage/>

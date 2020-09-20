@@ -2,7 +2,7 @@ import React from 'react';
 import {getLanguage, Language} from "../language";
 import {store} from "../App";
 import {useSelector} from "react-redux";
-import {State} from "../Store/reducers";
+import {State, Token} from "../Store/reducers";
 import {Redirect} from "react-router-dom";
 import ChangePasswordForm from "../Components/ChangePasswordForm";
 
@@ -10,7 +10,7 @@ import ChangePasswordForm from "../Components/ChangePasswordForm";
 export default function Settings(): JSX.Element {
 
     const language: Language = getLanguage(store.getState().language);
-    const token: string = useSelector((state: State) =>state.token);
+    const token: Token = useSelector((state: State) =>state.token);
 
     if(!store.getState().token){
         return  <Redirect

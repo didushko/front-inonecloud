@@ -2,6 +2,9 @@ import React, {useReducer} from "react";
 import {getLanguage, Language} from "../language";
 import {store} from "../App";
 import axios, {AxiosResponse} from "axios";
+import {useSelector} from "react-redux";
+import {State, Token} from "../Store/reducers";
+import {disconnect} from "cluster";
 
 
 interface IState {
@@ -16,7 +19,7 @@ interface IState {
 function ChangePasswordForm(): JSX.Element {
 
     const language: Language = getLanguage(store.getState().language);
-
+    const token: Token = useSelector((state: State) => state.token);
 
     let [formState, setFormState] = useReducer((state: IState, newState: object) => {
         let st = {...state, ...newState};
@@ -32,16 +35,15 @@ function ChangePasswordForm(): JSX.Element {
     });
 
     function validation(st: IState) {
-        if(st.newPassword != st.rPassword){
-            st.error="Passwords are not equals" //todo change to variable
-            st.validation=false;
-        }
-        if(st.currentPassword == st.newPassword){
-            st.error = "New password must not be equal current password"; //todo change to variable
+        if (st.newPassword != st.rPassword) {
+            st.error = "Passwords are not equals" //todo change to variable
             st.validation = false;
         }
-        else {
-            st.error='';
+        if (st.currentPassword == st.newPassword) {
+            st.error = "New password must not be equal current password"; //todo change to variable
+            st.validation = false;
+        } else {
+            st.error = '';
             st.validation = true;
         }
         return st;
@@ -54,25 +56,31 @@ function ChangePasswordForm(): JSX.Element {
     }
 
     async function changePassword() {
+        console.log("token " + token)
         try {
             let result: AxiosResponse = await axios.post(
                 "http://localhost:8080/api/user/changePassword",
-                //todo add authorization header
                 {
                     current_password: formState.currentPassword,
                     new_password: formState.newPassword
-
                 },
+                {
+                    headers: {
+                        Authorization: "Bearer " + token.token
+                    }
+                }
             );
-            if (result.status === 201) {
+            if (result.status === 200) {
                 setFormState({changePassword: language.Settings.changePassword});
             }
             //window.location.href = "/";
         } catch (e) {
+            console.log(e.response)
             switch (e.response.status) {
-                // case 409: setFormState({registration:language.SignUp.form.errors.userExist}); break;
-                // case 400: setFormState({registration: language.SignUp.form.errors.incorrectly}); break;
-                // default: setFormState({registration:language.SignUp.form.errors.server}); break;
+                case 409: setFormState({registration:language.SignUp.form.errors.userExist}); break;
+                case 400: setFormState({registration: language.SignUp.form.errors.incorrectly}); break;
+                case 403: console.log("forbidden"); break;
+                 default: setFormState({}); break;
             }
 
         }

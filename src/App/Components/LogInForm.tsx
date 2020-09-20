@@ -3,7 +3,7 @@ import {getLanguage, Language} from "../language";
 import {store} from "../App";
 import axios, {AxiosResponse} from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {State} from "../Store/reducers";
+import {State, Token} from "../Store/reducers";
 import {authReducer} from "../Store/auth/reducers";
 import {setAuth} from "../Store/auth/actions";
 
@@ -15,7 +15,7 @@ interface IState {
 
 function LogInForm(): JSX.Element {
     const language: Language = getLanguage(store.getState().language);
-    const token :string = useSelector((state :State) =>state.token);
+    const token :Token = useSelector((state :State) =>state.token);
     const dispatch = useDispatch();
 
     const [logState, logDispatch] = useReducer((state: IState, newState: object) => ({...state, ...newState}),

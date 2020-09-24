@@ -1,4 +1,4 @@
-import React, {useReducer} from "react";
+import React, {useReducer, useRef} from "react";
 import {getLanguage, Language} from "../language";
 import {store} from "../App";
 import axios, {AxiosResponse} from "axios";
@@ -17,6 +17,8 @@ function LogInForm(): JSX.Element {
     const language: Language = getLanguage(store.getState().language);
     const token :Token = useSelector((state :State) =>state.token);
     const dispatch = useDispatch();
+
+
 
     const [logState, logDispatch] = useReducer((state: IState, newState: object) => ({...state, ...newState}),
         {

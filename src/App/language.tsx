@@ -46,13 +46,19 @@ export interface Language {
 
     },
     Settings: {
+        sideMenu: {
+            main: string,
+            personalInfo: string,
+            security: string,
+            payment: string
+        },
         changePasswordForm: {
             oldpassword: string,
             newpassword: string,
             rnewpassword: string,
             button: string
         },
-        changePassword:string
+        changePassword: string
     }
 }
 
@@ -119,7 +125,7 @@ const langList: LangList = {
                         password: "Password should have 6 sybols with digits",
                         rpassword: "Passwords do not match",
                         userExist: "Such user already exists",
-                        incorrectly: "Incorrectly data",
+                        incorrectly: "Incorrect data",
                         server: "Something wrong! Try later"
                     },
                     registration: "Registration successful!"
@@ -127,6 +133,12 @@ const langList: LangList = {
 
             },
             Settings: {
+                sideMenu: {
+                    main: "Main",
+                    personalInfo: "Personal Information",
+                    security: "Security",
+                    payment: "Payment"
+                },
                 changePasswordForm: {
                     oldpassword: "Old Password",
                     newpassword: "New Password",
@@ -197,6 +209,12 @@ const langList: LangList = {
             }
             ,
             Settings: {
+                sideMenu: {
+                    main: "Главная",
+                    personalInfo: "Личная информация",
+                    security: "Безопасноть",
+                    payment: "Платежи"
+                },
                 changePasswordForm: {
                     oldpassword: "Old Password",
                     newpassword: "New Password",

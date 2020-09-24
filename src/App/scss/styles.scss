@@ -396,6 +396,57 @@ table {
     }
   }
 }
+.container{
+  margin: 0 1em;
+  position: relative;
+  padding: 4em 0 1em 0;
+
+  h1{
+    text-align: center;
+  }
+}
+
+.sideMenu{
+  margin-left: -1em;
+  width: 17vw;
+
+  li{
+    padding-left: 1em;
+    padding-top: .1em;
+    padding-bottom: .1em;
+    width: inherit;
+    border-radius: 0 50px 50px 0;
+    display: block;
+    cursor: pointer;
+    a {
+      display: flex;
+      position: relative;
+      align-items: center;
+      padding: .3em;
+
+      .image{
+        width: 1.5em;
+        padding-right: 1em;
+      }
+
+      img {
+        display: flex;
+        width: 100%;
+        height: 100%;
+      }
+
+      .menuText {
+        font-weight: 500;
+        font-size: .8em;
+      }
+    }
+  }
+  .hoverable{
+    &:hover{
+      background: rgba(77, 124, 168, .5);
+    }
+  }
+}
 
 /*CTA*/
 #cta {

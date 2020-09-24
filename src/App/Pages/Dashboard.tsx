@@ -4,6 +4,7 @@ import {store} from "../App";
 import {useSelector} from "react-redux";
 import {State, Token} from "../Store/reducers";
 import {Redirect} from "react-router-dom";
+import CloudsTokenCheck from "../Components/CloudsTokenCheck";
 
 
 export default function Dashboard(): JSX.Element {
@@ -22,6 +23,7 @@ export default function Dashboard(): JSX.Element {
     return (
         <article id='main' className='container'>
             <p>Вход выполнен</p>
+            <CloudsTokenCheck/>
         </article>
     )
 

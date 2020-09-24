@@ -4,7 +4,6 @@ import {store} from "../App";
 import axios, {AxiosResponse} from "axios";
 import {useSelector} from "react-redux";
 import {State, Token} from "../Store/reducers";
-import {disconnect} from "cluster";
 
 
 interface IState {
@@ -56,7 +55,6 @@ function ChangePasswordForm(): JSX.Element {
     }
 
     async function changePassword() {
-        console.log("token " + token)
         try {
             let result: AxiosResponse = await axios.post(
                 "http://localhost:8080/api/user/changePassword",
@@ -72,13 +70,14 @@ function ChangePasswordForm(): JSX.Element {
             );
             if (result.status === 200) {
                 setFormState({changePassword: language.Settings.changePassword});
+                console.log(result.data)
+
             }
             //window.location.href = "/";
         } catch (e) {
-            console.log(e.response)
             switch (e.response.status) {
-                case 409: setFormState({registration:language.SignUp.form.errors.userExist}); break;
-                case 400: setFormState({registration: language.SignUp.form.errors.incorrectly}); break;
+                case 409: setFormState({changePassword:language.SignUp.form.errors.userExist}); break;
+                case 400: setFormState({changePassword: language.SignUp.form.errors.incorrectly}); break;
                 case 403: console.log("forbidden"); break;
                  default: setFormState({}); break;
             }

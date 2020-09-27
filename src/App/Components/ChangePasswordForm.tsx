@@ -76,49 +76,62 @@ function ChangePasswordForm(): JSX.Element {
             //window.location.href = "/";
         } catch (e) {
             switch (e.response.status) {
-                case 409: setFormState({changePassword:language.SignUp.form.errors.userExist}); break;
-                case 400: setFormState({changePassword: language.SignUp.form.errors.incorrectly}); break;
-                case 403: console.log("forbidden"); break;
-                 default: setFormState({}); break;
+                case 409:
+                    setFormState({changePassword: language.SignUp.form.errors.userExist});
+                    break;
+                case 400:
+                    setFormState({changePassword: language.SignUp.form.errors.incorrectly});
+                    break;
+                case 403:
+                    console.log("forbidden");
+                    break;
+                default:
+                    setFormState({});
+                    break;
             }
 
         }
     }
 
     return (
-        <form id='registration' method='post' action="?">
-            <fieldset id="inputs">
-                <input name='currentPassword' type='password'
-                       placeholder={language.Settings.changePasswordForm.oldpassword} required={true}
-                       pattern='[0-9a-zA-Z]{6,32}' title='Password should have 6 sybols with digits'
-                       className='password'
-                       value={formState.currentPassword}
-                       onChange={changeInput}
-                />
+        <div id='main' className='container'>
+            <h2>Change Password</h2>
+            <form id='registration' method='post' action="?">
+                <fieldset id="inputs">
+                    <input name='currentPassword' type='password'
+                           placeholder={language.Settings.changePasswordForm.oldpassword} required={true}
+                           pattern='[0-9a-zA-Z]{6,32}' title='Password should have 6 sybols with digits'
+                           className='password'
+                           value={formState.currentPassword}
+                           onChange={changeInput}
+                    />
 
-                <input name='newPassword' type='password' placeholder={language.Settings.changePasswordForm.newpassword}
-                       required={true}
-                       pattern='[0-9a-zA-Z]{6,32}' title='Password should have 6 sybols with digits'
-                       className='password'
-                       value={formState.newPassword}
-                       onChange={changeInput}
-                />
+                    <input name='newPassword' type='password'
+                           placeholder={language.Settings.changePasswordForm.newpassword}
+                           required={true}
+                           pattern='[0-9a-zA-Z]{6,32}' title='Password should have 6 sybols with digits'
+                           className='password'
+                           value={formState.newPassword}
+                           onChange={changeInput}
+                    />
 
-                <input name='rPassword' type='password' placeholder={language.Settings.changePasswordForm.rnewpassword}
-                       required={true}
-                       pattern='[0-9a-zA-Z]{6,32}' className='password'
-                       value={formState.rPassword}
-                       onChange={changeInput}
-                />
+                    <input name='rPassword' type='password'
+                           placeholder={language.Settings.changePasswordForm.rnewpassword}
+                           required={true}
+                           pattern='[0-9a-zA-Z]{6,32}' className='password'
+                           value={formState.rPassword}
+                           onChange={changeInput}
+                    />
 
-                <input disabled={!formState.validation}
-                       style={!formState.validation ? {backgroundColor: "gray"} : undefined} type="button"
-                       name="ChangePassword" value={language.Settings.changePasswordForm.button} className="button"
-                       onClick={changePassword}/>
-                <div style={{color: "red"}}>{formState.error ? formState.error : formState.changePassword}</div>
+                    <input disabled={!formState.validation}
+                           style={!formState.validation ? {backgroundColor: "gray"} : undefined} type="button"
+                           name="ChangePassword" value={language.Settings.changePasswordForm.button} className="button"
+                           onClick={changePassword}/>
+                    <div style={{color: "red"}}>{formState.error ? formState.error : formState.changePassword}</div>
 
-            </fieldset>
-        </form>
+                </fieldset>
+            </form>
+        </div>
     )
 
 }

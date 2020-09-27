@@ -24,16 +24,15 @@ export default function Settings(): JSX.Element {
     return (
         <div className='container'>
             <SettingsMenu/>
-            <h2>Settings</h2>
-            <hr></hr>
-            <article id='main' className='container'>
+            {/*<h2>Settings</h2>*/}
+            {/*<hr></hr>*/}
+
+            <article className='settings_side'>
                 <h2>Cloud storage connection</h2>
                 <button>Connect Yandex Disk</button>
                 <button>Connect Dropbox</button>
                 <button>Connect Google Drive</button>
-                <h2>Change Password</h2>
-                <ChangePasswordForm></ChangePasswordForm>
-
+                <ChangePasswordForm/>
             </article>
         </div>
     )

@@ -328,7 +328,7 @@ table {
 
   #registration {
     text-align: center;
-    max-width: 50%;
+    max-width: 100%;
     width: 25em;
     border: solid 1px #ccc;
     //margin-left: 40%;
@@ -395,6 +395,68 @@ table {
       }
     }
   }
+}
+.container{
+  margin: 0 1em;
+  position: relative;
+  padding: 4em 0 1em 0;
+
+  h1{
+    text-align: center;
+  }
+}
+
+.sideMenu{
+ position: absolute;
+  margin-left: -1em;
+  width: 17vw;
+  display: inline-block;
+
+  li{
+    padding-left: 1em;
+    padding-top: .1em;
+    padding-bottom: .1em;
+    width: inherit;
+    border-radius: 0 50px 50px 0;
+    display: block;
+    cursor: pointer;
+    .link {
+      display: flex;
+      position: relative;
+      align-items: center;
+      padding: .3em;
+      text-decoration: none;
+      font-family: $basic-ff;
+      color: #333;
+      
+
+      .image{
+        width: 1.5em;
+        padding-right: 1em;
+      }
+
+      img {
+        display: flex;
+        width: 100%;
+        height: 100%;
+      }
+
+      .menuText {
+        font-weight: 500;
+        font-size: .8em;
+      }
+    }
+  }
+  .hoverable{
+    &:hover{
+      background: rgba(77, 124, 168, .5);
+    }
+  }
+}
+.settings_side{
+ position: relative;
+  margin-left: 17vw;
+  display: inline-block;
 }
 
 /*CTA*/

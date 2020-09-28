@@ -1,0 +1,140 @@
+import React, {useReducer} from "react";
+import {getLanguage, Language} from "../language";
+import {store} from "../App";
+import axios, {AxiosResponse} from "axios";
+import {useSelector} from "react-redux";
+import {State, Token} from "../Store/reducers";
+
+
+interface IState {
+    currentPassword: string,
+    newPassword: string,
+    rPassword: string,
+    validation: boolean,
+    error: string,
+    changePassword: string
+}
+
+function ChangePasswordForm(): JSX.Element {
+
+    const language: Language = getLanguage(store.getState().language);
+    const token: Token = useSelector((state: State) => state.token);
+
+    let [formState, setFormState] = useReducer((state: IState, newState: object) => {
+        let st = {...state, ...newState};
+        st = {...st, ...validation(st)};
+        return st;
+    }, {
+        currentPassword: '',
+        newPassword: '',
+        rPassword: '',
+        validation: false,
+        error: '',
+        changePassword: ''
+    });
+
+    function validation(st: IState) {
+        if (st.newPassword != st.rPassword) {
+            st.error = "Passwords are not equals" //todo change to variable
+            st.validation = false;
+        }
+        if (st.currentPassword == st.newPassword) {
+            st.error = "New password must not be equal current password"; //todo change to variable
+            st.validation = false;
+        } else {
+            st.error = '';
+            st.validation = true;
+        }
+        return st;
+    }
+
+
+    function changeInput(e: any) {
+        setFormState({[e.target.name]: e.target.value});
+        console.log(formState);
+    }
+
+    async function changePassword() {
+        try {
+            let result: AxiosResponse = await axios.post(
+                "http://localhost:8080/api/user/changePassword",
+                {
+                    current_password: formState.currentPassword,
+                    new_password: formState.newPassword
+                },
+                {
+                    headers: {
+                        Authorization: "Bearer " + token.token
+                    }
+                }
+            );
+            if (result.status === 200) {
+                setFormState({changePassword: language.Settings.changePassword});
+                console.log(result.data)
+
+            }
+            //window.location.href = "/";
+        } catch (e) {
+            switch (e.response.status) {
+                case 409:
+                    setFormState({changePassword: language.SignUp.form.errors.userExist});
+                    break;
+                case 400:
+                    setFormState({changePassword: language.SignUp.form.errors.incorrectly});
+                    break;
+                case 403:
+                    console.log("forbidden");
+                    break;
+                default:
+                    setFormState({});
+                    break;
+            }
+
+        }
+    }
+
+    return (
+        <div id='main' className='container'>
+            <h2>Change Password</h2>
+            <form id='registration' method='post' action="?">
+                <fieldset id="inputs">
+                    <input name='currentPassword' type='password'
+                           placeholder={language.Settings.changePasswordForm.oldpassword} required={true}
+                           pattern='[0-9a-zA-Z]{6,32}' title='Password should have 6 sybols with digits'
+                           className='password'
+                           value={formState.currentPassword}
+                           onChange={changeInput}
+                    />
+
+                    <input name='newPassword' type='password'
+                           placeholder={language.Settings.changePasswordForm.newpassword}
+                           required={true}
+                           pattern='[0-9a-zA-Z]{6,32}' title='Password should have 6 sybols with digits'
+                           className='password'
+                           value={formState.newPassword}
+                           onChange={changeInput}
+                    />
+
+                    <input name='rPassword' type='password'
+                           placeholder={language.Settings.changePasswordForm.rnewpassword}
+                           required={true}
+                           pattern='[0-9a-zA-Z]{6,32}' className='password'
+                           value={formState.rPassword}
+                           onChange={changeInput}
+                    />
+
+                    <input disabled={!formState.validation}
+                           style={!formState.validation ? {backgroundColor: "gray"} : undefined} type="button"
+                           name="ChangePassword" value={language.Settings.changePasswordForm.button} className="button"
+                           onClick={changePassword}/>
+                    <div style={{color: "red"}}>{formState.error ? formState.error : formState.changePassword}</div>
+
+                </fieldset>
+            </form>
+        </div>
+    )
+
+}
+
+
+export default ChangePasswordForm;

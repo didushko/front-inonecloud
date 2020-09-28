@@ -1,57 +1,55 @@
-import React, {useReducer} from "react";
+import React, {useReducer, useRef} from "react";
 import {getLanguage, Language} from "../language";
 import {store} from "../App";
-import axios, {AxiosResponse} from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {State} from "../Store/reducers";
-import {authReducer} from "../Store/auth/reducers";
+import {State, Token} from "../Store/reducers";
 import {setAuth} from "../Store/auth/actions";
 
-interface IState {
-    username: string,
-    password: string,
-    error: string,
-}
+import authService from "../Api/AuthService"
+import {IAuth, IAuthResponse} from "../Models/LoginModel";
 
 function LogInForm(): JSX.Element {
     const language: Language = getLanguage(store.getState().language);
-    const token :string = useSelector((state :State) =>state.token);
+    const token: Token = useSelector((state: State) => state.token);
     const dispatch = useDispatch();
 
-    const [logState, logDispatch] = useReducer((state: IState, newState: object) => ({...state, ...newState}),
+
+    const [logState, logDispatch] = useReducer((state: IAuth, newState: object) => ({...state, ...newState}),
         {
             username: '',
             password: '',
             error: '',
         });
 
-    async function logIn(){
-        if(!logState.username || !logState.password){
+    async function logIn() {
+        if (!logState.username || !logState.password) {
             logDispatch({error: "Введите корректные данные"});
             return;
         }
+        const data: IAuth = {
+            username: logState.username.toString(),
+            password: logState.password.toString()
+        }
+
         try {
-            let result: AxiosResponse = await axios.post(
-                "http://localhost:8080/api/auth",
-                {
-                    username: logState.username,
-                    password: logState.password,
-                },
-            );
-            if(result.status===200){
-                logDispatch({error:"Вход выполнен!"});
+            let result: any = await authService.authUser(data);
+
+            if (result.data.token) {
+                logDispatch({error: "Вход выполнен!"});
                 console.log(result);
-                dispatch(setAuth(result.data));
-                console.log("result",result.data);
+                dispatch(setAuth(result.data.token));
+                console.log("result", result);
                 console.log("token", store.getState().token);
-                // window.location.href = "/";
             }
         } catch (e) {
-                switch(e.response.status){
-                case 403: logDispatch({error:"Некорректный логин/пароль"}); break;
-                default: logDispatch({error:"К сожалению сервер временно недоступен, попробуйте позже"}); break;
+            switch (e.response.status) {
+                case 400:
+                    logDispatch({error: "Некорректный логин/пароль"});
+                    break;
+                default:
+                    logDispatch({error: "К сожалению сервер временно недоступен, попробуйте позже"});
+                    break;
             }
-
         }
     }
 
@@ -62,20 +60,20 @@ function LogInForm(): JSX.Element {
                    autoFocus={true} required={true}
                    className="username"
                    value={logState.username}
-                   // onChange={(e)=>logDispatch({[e.target.name] : e.target.value})}
-                   onChange={(e)=>logDispatch({[e.target.name] : e.target.value, error: ''})}
+                // onChange={(e)=>logDispatch({[e.target.name] : e.target.value})}
+                   onChange={(e) => logDispatch({[e.target.name]: e.target.value, error: ''})}
             />
             <input name="password"
                    type="password"
                    placeholder={language.SignIn.password}
                    required={true} className="password"
                    value={logState.password}
-                   onChange={(e)=>logDispatch({[e.target.name] : e.target.value, error: ''})}
+                   onChange={(e) => logDispatch({[e.target.name]: e.target.value, error: ''})}
             />
         </fieldset>
         <fieldset id="actions">
             <input type="button" name="logIN" value={language.SignIn.login} className="button" onClick={logIn}/>
-            <div style={{color: "red", position: "absolute", textAlign: "center", left: "40%"}} >{logState.error}</div>
+            <div style={{color: "red", position: "absolute", textAlign: "center", left: "40%"}}>{logState.error}</div>
         </fieldset>
     </form>)
 }
